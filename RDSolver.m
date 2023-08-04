@@ -11,7 +11,7 @@ dimensions=1;
 %Number of gridpoints per dimension. Use 60-300 or so for 2D, and ideally
 %300-3000 or so for 1D depending on the structures that need to be
 %resolved.
-m = 1000;
+m = 200;
 
 %Total number of gridpoints; varies by dimension as:
 %2D make N=m^2; 1D make N=m;
@@ -79,7 +79,7 @@ U0 = 1e-3*randn(2*N,1);
 %Jacobian of the vector function F above for the vector argument U, this
 %matrix is where all of the nonzero elements are. This is important for
 %implicit timestepping!
-JacSparse = sparse([Lap, eye(N); eye(N), Lap]);
+JacSparse = sparse([Lap, speye(N); speye(N), Lap]);
 odeOptions = odeset('JPattern',JacSparse,'RelTol',1e-9,'AbsTol',1e-9);
 
 %Solve the system using an implicit stiff timestepper.

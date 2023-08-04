@@ -6,7 +6,7 @@ clear;
 rng('default');
 
 %Set the spatial dimension to be 1D or 2D.
-dimensions=2;
+dimensions=1;
 
 %Number of gridpoints per dimension. Use 60-300 or so for 2D, and ideally
 %300-3000 or so for 1D depending on the structures that need to be
@@ -81,5 +81,4 @@ odeOptions = odeset('JPattern',JacSparse,'RelTol',1e-9,'AbsTol',1e-9);
 
 %Solve the system using an implicit stiff timestepper.
 [T,U] = ode15s(F,T,U0,odeOptions);
-U = U';
 
