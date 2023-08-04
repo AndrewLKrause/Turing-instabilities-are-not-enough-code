@@ -1,7 +1,7 @@
 close all;
 
 
-v = VideoWriter('Animation.avi');
+v = VideoWriter('Animation.webm');
 v.FrameRate = round(length(T)/10);
 
 open(v);
