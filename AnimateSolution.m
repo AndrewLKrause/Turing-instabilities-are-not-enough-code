@@ -15,7 +15,7 @@ if (dimensions == 1)
         set(gca,'fontsize',24);
         axis tight;
         set(gca,'YLim',[minU,maxU]);
-        title(["$t = $",num2str(T(i))])
+        title(['$t = ',num2str(T(i)),'$'])
         pause(5/length(T));
         hold off;
     end
@@ -29,7 +29,7 @@ elseif (dimensions==2)
             break
         end
         imagesc(reshape(U(i,ui),m,m)); 
-        title(["$t = $",num2str(T(i))])
+        title(['$t = ',num2str(T(i)),'$'])
         pause(5/length(T));
     end
 

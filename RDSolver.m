@@ -15,12 +15,12 @@ showProgressBar = true;
 tolerance = 1e-9;
 
 % Number of gridpoints per dimension. Use 60-300 or so for 2D, and ideally
-%300-3000 or so for 1D depending on the structures that need to be
+% 300-3000 or so for 1D depending on the structures that need to be
 % resolved.
 m = 200;
 
 % Total number of gridpoints; varies by dimension as:
-%2D make N=m^2; 1D make N=m.
+% 2D make N=m^2; 1D make N=m.
 if (dimensions == 1)
     N = m;
 elseif (dimensions == 2)
@@ -57,10 +57,10 @@ Lap = spdiags([e,-2*e,e],[1,0,-1],m,m);
 Lap(1,end) = 1; Lap(end,1) = 1;
 
 if (dimensions == 1)
-    %1D Laplacian
+    % 1D Laplacian
     Lap = (1/dx)^2*Lap;
 elseif (dimensions == 2)
-    %2D Laplacian
+    % 2D Laplacian
     I = speye(m);
     Lap = (1/dx)^2*(kron(Lap,I) + kron(I, Lap));
 end
@@ -70,9 +70,8 @@ end
 ui = 1:N; vi = N+1:2*N;
 
 % Reaction kinetics
-f = @(u,v)u-v-epsilon*u.^3;
-g = @(u,v)a*v.*(v+c).*(v-5)+a*b*u-epsilon*v.^3;
-
+f = @(u,v) u - v - epsilon*u.^3;
+g = @(u,v) a*v.*(v + c).*(v - 5) + a*b*u - epsilon*v.^3;
 
 % Put together the reaction kinetics+diffusion terms into a big vector.
 F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui);
@@ -86,9 +85,8 @@ U0 = 1e-3*randn(2*N,1);
 % Jacobian of the vector function F above for the vector argument U, this
 % matrix is where all of the nonzero elements are. This is important for
 % implicit timestepping!
-JacSparse = sparse([Lap, speye(N); speye(N), Lap]);
+JacSparse = sparse([Lap,speye(N);speye(N),Lap]);
 odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance);
-
 if (showProgressBar) 
     odeOptions = odeset(odeOptions,'OutputFcn',@ODEProgBar);
 end
