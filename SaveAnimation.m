@@ -1,8 +1,9 @@
 close all;
 
 
-v = VideoWriter('Animation.webm');
+v = VideoWriter('Animation.mp4');
 v.FrameRate = round(length(T)/10);
+v.FileFormat = 'mp4';
 
 open(v);
 
