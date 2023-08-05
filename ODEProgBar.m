@@ -5,17 +5,17 @@ function status=ODEProgBar(t,y,flag)
         % Integration steps
         ts=mean(t);
         progress=100*ts/tf;
-        textprogressbar(progress);
+        TextProgressBar(progress);
         status=0;
     else
         switch flag
             case 'init'     % Initializing progress bar
                 tstart=tic;
                 tf=max(t);
-                textprogressbar('ODE integration: ');
+                TextProgressBar('ODE integration: ');
             case 'done'     % Finishing status function
                 tf=[];
-                textprogressbar('');
+                TextProgressBar('');
                 display([ '   Integration time: ' num2str(toc(tstart))]);
                 tstart=[];
             otherwise
