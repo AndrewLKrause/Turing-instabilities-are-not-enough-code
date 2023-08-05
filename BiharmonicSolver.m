@@ -1,49 +1,27 @@
-clear;
-% This code solves the reaction-diffusion system on a square
+% This code solves the biharmonic system on a square
 % domain in 1D and 2D.
 
-% Seed the random number generator.
-rng('default');
+if(~exist('setup','var'))
+    clear;
+    SetupBaseParams;
+    % Domain length.
+    L = 50;
 
-% Set the spatial dimension to be 1D or 2D.
-dimensions = 2;
+    % Parameters in the reaction kinetics.
+    a = 5; b = 0.9;
 
-% Show a progress bar?
-showProgressBar = true;
+    % Diffusion coefficients.
+    D = 1.55;
 
-% Numerical tolerances (absolute and relative).
-tolerance = 1e-9;
+    % Spatial step size.
+    dx = L/(m-1);
 
-% Number of gridpoints per dimension. Use 60-300 or so for 2D, and ideally
-% 300-3000 or so for 1D depending on the structures that need to be
-% resolved.
-m = 100;
+    % Time interval to solve the equations on.
+    T = linspace(0,300,1000);
 
-% Total number of gridpoints; varies by dimension as:
-% 2D make N=m^2; 1D make N=m.
-if (dimensions == 1)
-    N = m;
-elseif (dimensions == 2)
-    N = m^2;
+    % Spatial domain (needed for plotting only)
+    x = linspace(0,L,m);
 end
-
-% Domain length.
-L = 50;
-
-% Parameters in the reaction kinetics.
-a = 5; b = 0.9;
-
-% Diffusion coefficients.
-D = 1.55;
-
-% Spatial step size.
-dx = L/(m-1);
-
-% Time interval to solve the equations on.
-T = linspace(0,300,1000);
-
-% Spatial domain (needed for plotting only)
-x = linspace(0,L,m);
 
 % (Sparse) Laplacian matrix.
 e = ones(m,1);
@@ -82,7 +60,7 @@ U0 = 1 + 1e-3*randn(N,1);
 % implicit timestepping!
 JacSparse = sparse(Bih);
 odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance);
-if (showProgressBar) 
+if (showProgressBar)
     odeOptions = odeset(odeOptions,'OutputFcn',@ODEProgBar);
 end
 

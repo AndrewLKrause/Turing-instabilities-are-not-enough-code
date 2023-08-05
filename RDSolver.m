@@ -1,48 +1,28 @@
-clear;
 % This code solves the reaction-diffusion system on a square
 % domain in 1D and 2D.
 
-% Seed the random number generator
-rng('default');
+if(~exist('setup','var'))
+    clear;
+    SetupBaseParams;
+    % Domain length
+    L = 100;
 
-% Set the spatial dimension to be 1D or 2D.
-dimensions = 2;
+    % Parameters in the reaction kinetics
+    epsilon = 0.01;
+    a = 7/4; b = 10; c = (7972/4067);
 
-% Show a progress bar?
-showProgressBar = true;
+    % Diffusion coefficients
+    Du = 1;
+    Dv = 25;
 
-% Numerical tolerances (absolute and relative).
-tolerance = 1e-9;
-
-% Number of gridpoints per dimension. Use 60-300 or so for 2D, and ideally
-% 300-3000 or so for 1D depending on the structures that need to be
-% resolved.
-m = 200;
-
-% Total number of gridpoints; varies by dimension as:
-% 2D make N=m^2; 1D make N=m.
-if (dimensions == 1)
-    N = m;
-elseif (dimensions == 2)
-    N = m^2;
+    % Time interval to solve the equations on
+    T = linspace(0,1000,1000);
 end
-
-% Domain length
-L = 100;
-
-% Parameters in the reaction kinetics
-epsilon = 0.01;
-a = 7/4; b = 10; c = (7972/4067);
-
-% Diffusion coefficients
-Du = 1;
-Dv = 25;
 
 % Spatial step size
 dx = L/(m-1);
 
-% Time interval to solve the equations on
-T = linspace(0,1000,1000);
+
 
 % Spatial domain (needed for plotting only).
 x = linspace(0,L,m);
@@ -75,7 +55,7 @@ g = @(u,v) a*v.*(v + c).*(v - 5) + a*b*u - epsilon*v.^3;
 
 % Put together the reaction kinetics+diffusion terms into a big vector.
 F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui);
-           g(U(ui),U(vi)) + Dv*Lap*U(vi)];
+    g(U(ui),U(vi)) + Dv*Lap*U(vi)];
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics.
@@ -87,7 +67,7 @@ U0 = 1e-3*randn(2*N,1);
 % implicit timestepping!
 JacSparse = sparse([Lap,speye(N);speye(N),Lap]);
 odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance);
-if (showProgressBar) 
+if (showProgressBar)
     odeOptions = odeset(odeOptions,'OutputFcn',@ODEProgBar);
 end
 

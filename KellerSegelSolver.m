@@ -1,47 +1,27 @@
-clear;
-% This code solves the reaction-diffusion system on a square
+% This code solves the Keller-Segel chemotaxis system on a square
 % domain in 1D and 2D.
 
-% Seed the random number generator.
-rng('default');
+if(~exist('setup','var'))
+    clear;
+    SetupBaseParams;
 
-% Set the spatial dimension to be 1D or 2D.
-dimensions = 1;
+    % Domain length
+    L = 80;
 
-% Show a progress bar?
-showProgressBar = true;
+    % Parameters in the reaction kinetics
+    c = 3; A = 0.8; a = 1;
 
-% Numerical tolerances (absolute and relative).
-tolerance = 1e-9;
+    % Diffusion coefficients
+    Du = 1;
+    Dv = 1;
 
-% Number of gridpoints per dimension. Use 60-300 or so for 2D, and ideally
-% 300-3000 or so for 1D depending on the structures that need to be
-% resolved.
-m = 1000;
-
-% Total number of gridpoints; varies by dimension as:
-% 2D make N=m^2; 1D make N=m;
-if (dimensions == 1)
-    N = m;
-elseif (dimensions == 2)
-    N = m^2;
+    % Time interval to solve the equations on
+    T = linspace(0,500,1000);
 end
 
-% Domain length
-L = 80;
-
-% Parameters in the reaction kinetics
-c = 3; A = 0.5; a = 1;
-
-% Diffusion coefficients
-Du = 1;
-Dv = 1;
 
 % Spatial step size
 dx = L/(m-1);
-
-% Time interval to solve the equations on
-T = linspace(0,500,1000);
 
 % Spatial domain (needed for plotting only)
 x = linspace(0,L,m);
@@ -73,11 +53,11 @@ if (dimensions == 1)
     % 1D Laplacian
     Adv = (1/(2*dx))*Adv;
     Lap = (1/dx)^2*Lap;
-    
+
     F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui) -...
-               c*(U(ui).*(Lap*U(vi)) + (Adv*U(ui)).*(Adv*U(vi)));
-               g(U(ui),U(vi)) + Dv*Lap*U(vi)];
-    
+        c*(U(ui).*(Lap*U(vi)) + (Adv*U(ui)).*(Adv*U(vi)));
+        g(U(ui),U(vi)) + Dv*Lap*U(vi)];
+
 elseif (dimensions == 2)
     % 2D Laplacian
     I = speye(m);
@@ -86,9 +66,9 @@ elseif (dimensions == 2)
     Lap = (1/dx)^2*(kron(Lap,I) + kron(I, Lap));
 
     F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui) -...
-               c*(U(ui).*(Lap*U(vi)) +...
-                (Advx*U(ui)).*(Advx*U(vi)) + (Advy*U(ui)).*(Advy*U(vi)));
-               g(U(ui),U(vi)) + Dv*Lap*U(vi)];
+        c*(U(ui).*(Lap*U(vi)) +...
+        (Advx*U(ui)).*(Advx*U(vi)) + (Advy*U(ui)).*(Advy*U(vi)));
+        g(U(ui),U(vi)) + Dv*Lap*U(vi)];
 
 end
 
@@ -103,7 +83,7 @@ U0 = [1 + 1e-3*randn(N,1); 1/a + 1e-3*randn(N,1)];
 % implicit timestepping!
 JacSparse = sparse([Lap, Lap; speye(N), Lap]);
 odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance);
-if (showProgressBar) 
+if (showProgressBar)
     odeOptions = odeset(odeOptions,'OutputFcn',@ODEProgBar);
 end
 
