@@ -67,6 +67,7 @@ for iRun = 1:NumRuns
     runDetails.Du = Du;
     runDetails.Dv = Dv;
     runDetails.dx = dx;
+    runDetails.U0 = U0;
     runDetails.Patterns = Patterns(iRun);
     runDetails.Patterning = Patterning(iRun);
     sims{iRun} = runDetails;
