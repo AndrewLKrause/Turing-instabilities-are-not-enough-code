@@ -8,20 +8,21 @@ if(~exist('setup','var'))
     L = 50;
 
     % Parameters in the reaction kinetics.
-    a = 5; b = 0.9;
+    a = 5; b = 0.95;
 
     % Diffusion coefficients.
-    D = 1.55;
-
-    % Spatial step size.
-    dx = L/(m-1);
+    D = 1.5;
 
     % Time interval to solve the equations on.
     T = linspace(0,300,1000);
 
-    % Spatial domain (needed for plotting only)
-    x = linspace(0,L,m);
+
 end
+% Spatial domain (needed for plotting only)
+x = linspace(0,L,m);
+
+% Spatial step size.
+dx = L/(m-1);
 
 % (Sparse) Laplacian matrix.
 e = ones(m,1);
@@ -52,13 +53,13 @@ F = @(t,U) -D*Lap*U - Bih*U + a*U.*(1 - U).*(U - b);
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics
-U0 = 1 + 1e-3*randn(N,1);
+U0 = 1 + 1e-2*randn(N,1);
 
 % This is the Jacobian sparsity pattern. That is, if you compute the
 % Jacobian of the vector function F above for the vector argument U, this
 % matrix is where all of the nonzero elements are. This is important for
 % implicit timestepping!
-JacSparse = sparse(Bih);
+JacSparse = abs(Bih)+abs(Lap)+speye(m);
 odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance);
 if (showProgressBar)
     odeOptions = odeset(odeOptions,'OutputFcn',@ODEProgBar);

@@ -82,7 +82,7 @@ U0 = [1 + 1e-3*randn(N,1); 1/a + 1e-3*randn(N,1)];
 % matrix is where all of the nonzero elements are. This is important for
 % implicit timestepping!
 JacSparse = sparse([Lap, Lap; speye(N), Lap]);
-odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance);
+odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance,'InitialStep',1e-6);
 if (showProgressBar)
     odeOptions = odeset(odeOptions,'OutputFcn',@ODEProgBar);
 end
