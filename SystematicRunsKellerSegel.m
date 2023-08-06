@@ -72,4 +72,5 @@ for iRun = 1:NumRuns
     runDetails.Patterning = Patterning(iRun);
     sims{iRun} = runDetails;
 end
+save("SystematicRunsKellerSegel.mat", "sims");
 TextProgressBar('')
