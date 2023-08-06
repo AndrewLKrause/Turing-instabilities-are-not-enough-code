@@ -26,13 +26,16 @@ setup = 1;
 NumRuns = 1000; % Number of runs to check.
 Var = 0.05; R = @()(1-Var+2*Var*rand);
 
-% Keller-Segel runs
-% Time interval to solve the equations on
+% Time interval to solve the equations on.
 T = linspace(0,10000,10);
 Patterning = zeros(NumRuns,1);
 Patterns = zeros(NumRuns,1);
+if (~showProgressBar)
+    TextProgressBar('Running: ');
+end
+sims = cell(NumRuns,1);
 
-for iRun =1:NumRuns
+for iRun = 1:NumRuns
     % Seed the random number generator.
     rng(iRun);
 
@@ -51,10 +54,24 @@ for iRun =1:NumRuns
     dx = L/(m-1);
 
     RDSolver;
-    display([num2str(iRun), '/', num2str(NumRuns)]) 
-    max(Patterns)
+    if (~showProgressBar)
+        TextProgressBar(100 * iRun / NumRuns)
+    end
     Patterns(iRun) = max(U(end,ui))-min(U(end,ui));
     Patterning(iRun) = max(U(end,ui));
+
+    % Save.
+    runDetails = struct();
+    runDetails.L = L;
+    runDetails.epsilon = epsilon;
+    runDetails.a = a;
+    runDetails.b = b;
+    runDetails.c = c;
+    runDetails.Du = Du;
+    runDetails.Dv = Dv;
+    runDetails.dx = dx;
+    runDetails.Patterns = Patterns(iRun);
+    runDetails.Patterning = Patterning(iRun);
+    sims{iRun} = runDetails;
 end
-
-
+TextProgressBar('')
