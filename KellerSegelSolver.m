@@ -75,7 +75,7 @@ end
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics
-U0 = [1 + 1e-3*randn(N,1); 1/a + 1e-3*randn(N,1)];
+U0 = [1 + 1e-2*randn(N,1); 1/a + 1e-2*randn(N,1)];
 
 % This is the Jacobian sparsity pattern. That is, if you compute the
 % Jacobian of the vector function F above for the vector argument U, this

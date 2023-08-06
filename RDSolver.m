@@ -9,7 +9,7 @@ if(~exist('setup','var'))
 
     % Parameters in the reaction kinetics
     epsilon = 0.01;
-    a = 7/4; b = 10; c = (7972/4067);
+    a = 1.75; b = 10; c = 2;
 
     % Diffusion coefficients
     Du = 1;
@@ -59,7 +59,7 @@ F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui);
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics.
-U0 = 1e-3*randn(2*N,1);
+U0 = 1e-2*randn(2*N,1);
 
 % This is the Jacobian sparsity pattern. That is, if you compute the
 % Jacobian of the vector function F above for the vector argument U, this
