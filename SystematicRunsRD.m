@@ -23,8 +23,8 @@ end
 
 setup = 1;
 
-NumRuns = 1000; % Number of runs to check.
-Var = 0.05; R = @()(1-Var+2*Var*rand);
+NumRuns = 10000; % Number of runs to check.
+Var = 0.05; 
 
 % Time interval to solve the equations on.
 T = linspace(0,10000,10);
@@ -35,20 +35,24 @@ if (~showProgressBar)
 end
 sims = cell(NumRuns,1);
 
+% Seed the random number generator and generate a latin hypercube sample.
+rng('default');
+LHS=(1-Var+2*Var*lhsdesign(NumRuns,8));
+
 for iRun = 1:NumRuns
-    % Seed the random number generator.
-    rng(iRun);
+
 
     % Domain length
-    L = 100*R();
+    L = 100*LHS(iRun, 1);
 
     % Parameters in the reaction kinetics
-    epsilon = 0.01*R();
-    a = 1.75*R(); b = 17.5*R(); c = 2*R(); d = 5*R();
+    epsilon = 0.01*LHS(iRun, 2);
+    a = 1.75*LHS(iRun, 3); b = 17.5*LHS(iRun, 4); c = 2*LHS(iRun, 5); 
+    d = 5*LHS(iRun, 6);
 
     % Diffusion coefficients
-    Du = 1*R();
-    Dv = 25*R();
+    Du = 1*LHS(iRun, 7);
+    Dv = 25*LHS(iRun, 8);
 
     % Spatial step size.
     dx = L/(m-1);
