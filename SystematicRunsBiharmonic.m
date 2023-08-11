@@ -43,10 +43,10 @@ for iRun = 1:NumRuns
     L = 100*R();
 
     % Parameters in the reaction kinetics.
-    a = 5*R(); b = 0.95*R();
+    a = 5*R(); b = 0.95*R(); c = 1*R();
 
     % Diffusion coefficients.
-    D = 1.5*R();
+    Du = 1.5*R(); Dv = 1*R();
 
     % Spatial step size.
     dx = L/(m-1);
