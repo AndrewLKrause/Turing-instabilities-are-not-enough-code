@@ -9,7 +9,7 @@ if(~exist('setup','var'))
     L = 80;
 
     % Parameters in the reaction kinetics
-    c = 3; A = 0.8; a = 1;
+    a = 1; b = 1; c = 3; d = 0.8; 
 
     % Diffusion coefficients
     Du = 1;
@@ -44,7 +44,7 @@ Adv(end,1) = 1; Adv(1,end) = -1;
 ui = 1:N; vi = N+1:2*N;
 
 % Reaction kinetics
-f = @(u,v) u.*(1 - u).*(u - A);
+f = @(u,v) u.*(b - u).*(u - d);
 g = @(u,v) u - a*v;
 
 % Set the Laplacian and the nonlinear diffusion DivGrad based on dimension.
