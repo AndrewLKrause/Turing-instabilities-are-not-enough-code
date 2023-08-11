@@ -44,7 +44,7 @@ for iRun = 1:NumRuns
 
     % Parameters in the reaction kinetics
     epsilon = 0.01*R();
-    a = 1.75*R(); b = 10*R(); c = 2*R();
+    a = 1.75*R(); b = 10*R(); c = 2*R(); d = 5*R();
 
     % Diffusion coefficients
     Du = 1*R();
