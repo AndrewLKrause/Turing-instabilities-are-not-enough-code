@@ -42,7 +42,7 @@ for iRun = 1:NumRuns
     L = 80*R();
 
     % Parameters in the reaction kinetics
-    c = 3*R(); A = 0.8*R(); a = 1*R();
+    a = 1*R(); b = 1*R(); c = 3*R(); d = 0.8*R(); 
 
     % Diffusion coefficients
     Du = 1*R();
