@@ -9,7 +9,7 @@ if(~exist('setup','var'))
 
     % Parameters in the reaction kinetics
     epsilon = 0.01;
-    a = 1.75; b = 10; c = 2;
+    a = 1.75; b = 10; c = 2; d=5;
 
     % Diffusion coefficients
     Du = 1;
@@ -51,7 +51,7 @@ ui = 1:N; vi = N+1:2*N;
 
 % Reaction kinetics
 f = @(u,v) u - v - epsilon*u.^3;
-g = @(u,v) a*v.*(v + c).*(v - 5) + a*b*u - epsilon*v.^3;
+g = @(u,v) a*v.*(v + c).*(v - d) + a*b*u - epsilon*v.^3;
 
 % Put together the reaction kinetics+diffusion terms into a big vector.
 F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui);
