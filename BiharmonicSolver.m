@@ -8,10 +8,10 @@ if(~exist('setup','var'))
     L = 50;
 
     % Parameters in the reaction kinetics.
-    a = 5; b = 0.95;
+    a = 5; b = 0.95; c = 1;
 
     % Diffusion coefficients.
-    D = 1.5;
+    Du = 1.5; Dv = 1;
 
     % Time interval to solve the equations on.
     T = linspace(0,300,1000);
@@ -49,7 +49,7 @@ Bih = Lap*Lap;
 ui = 1:N;
 
 % Put together the reaction kinetics+diffusion terms into a big vector
-F = @(t,U) -D*Lap*U - Bih*U + a*U.*(1 - U).*(U - b);
+F = @(t,U) -Du*Lap*U - Dv*Bih*U + a*U.*(c - U).*(U - b);
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics
