@@ -1,22 +1,10 @@
+function [U,x,ui,vi,uss] = BiharmonicSolver(dims, m, params, tols, T,showProgBar)
 % This code solves the biharmonic system on a square
 % domain in 1D and 2D.
 
-if(~exist('setup','var'))
-    clear;
-    SetupBaseParams;
-    % Domain length.
-    L = 100;
+% Parameters of the model.
+[L, a, b, c, D] = deal(params{:});
 
-    % Parameters in the reaction kinetics.
-    a = 5; b = 0.9; c = 1;
-
-    % Diffusion coefficients.
-    D = 1.45;
-
-    % Time interval to solve the equations on.
-    T = linspace(0,300,1000);
-
-end
 % Spatial domain (needed for plotting only)
 x = linspace(0,L,m);
 
@@ -24,32 +12,38 @@ x = linspace(0,L,m);
 dx = L/(m-1);
 
 % (Sparse) Laplacian matrix.
-e = ones(m,1);
-Lap = spdiags([e,-2*e,e],[1,0,-1],m,m);
+eVec = ones(m,1);
+Lap = spdiags([eVec,-2*eVec,eVec],[1,0,-1],m,m);
 
 % Neumann boundary conditions.
 % Lap(1,1) = -1; Lap(end,end) = -1;
 % Periodic boundary conditions.
 Lap(1,end) = 1; Lap(end,1) = 1;
 
-if (dimensions == 1)
+% Total number of gridpoints; varies by dimension as does Laplacian.
+if (dims == 1)
     % 1D Laplacian.
     Lap = (1/dx)^2*Lap;
-elseif (dimensions == 2)
+    N = m;
+elseif (dims == 2)
     % 2D Laplacian.
     I = speye(m);
     Lap = (1/dx)^2*(kron(Lap,I) + kron(I, Lap));
+    N = m^2;
 end
 
 % Define the biharmonic operator.
 Bih = Lap*Lap;
 
 % Indices corresponding to u variable. This is for plotting code to work.
-ui = 1:N;
+ui = 1:N; vi = [];
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics
 U0 = c + 1e-2*randn(N,1);
+
+%The u value of the HSS used to check for pattern formation
+uss = c;
 
 % Put together the reaction kinetics+diffusion terms into a big vector
 F = @(t,U) -D*Lap*U - Bih*U + a*U.*(c - U).*(U - b);
@@ -58,12 +52,12 @@ F = @(t,U) -D*Lap*U - Bih*U + a*U.*(c - U).*(U - b);
 % Jacobian of the vector function F above for the vector argument U, this
 % matrix is where all of the nonzero elements are. This is important for
 % implicit timestepping!
-JacSparse = abs(Bih)+abs(Lap)+speye(m);
-odeOptions = odeset('JPattern',JacSparse,'RelTol',tolerance,'AbsTol',tolerance,'InitialStep',1e-6);
-if (showProgressBar)
+JacSparse = abs(Bih)+abs(Lap);
+odeOptions = odeset('JPattern',JacSparse,'RelTol',tols,'AbsTol',tols,'InitialStep',1e-6);
+if (showProgBar)
     odeOptions = odeset(odeOptions,'OutputFcn',@ODEProgBar);
 end
 
 % Solve the system using an implicit stiff timestepper.
-[T,U] = ode15s(F,T,U0,odeOptions);
-
+[~,U] = ode15s(F,T,U0,odeOptions);
+end
