@@ -1,4 +1,4 @@
-function [NumPatterns, NumPatterning] = SystematicRuns(modelName,dims)
+function [NumPatterns, NumPatterning, NumTuring] = SystematicRuns(modelName,dims)
 % This function performs NumRuns simulations of a given model and dimension
 % The outputs are the number of sims that had a 'pattern' at the final 
 % %time, and the number which left the HSS, respectively.
@@ -10,12 +10,12 @@ showProgBar = false;
 rng('default');
 [m,tols] = CreateBaseParams(dims);
 
-NumRuns = 10000; % Number of runs to check.
+NumRuns = 100; % Number of runs to check.
 Var = 0.05; % Percentage variation from base parameter values
 
 switch modelName
     case 'RD'
-        BaseParams = {100, 1.75, 18, 2, 5, 0.02,25};
+        BaseParams = {100, 1.75, 18, 2, 5, 0.02,30};
         %            {  L,   a,  b, c, d,    e, D}
         Solver = @RDSolver;
     case 'KellerSegel'
@@ -46,12 +46,14 @@ T = linspace(0,10000,10);
 
 Patterning = zeros(NumRuns,1);
 Patterns = zeros(NumRuns,1);
+TuringUnstable = zeros(NumRuns,1);
 
 if (showProgBar)
     TextProgressBar('Running: ');
 end
 RunSolutions = cell(NumRuns,1);
 RunParameters = cell(NumRuns,1);
+
 
 % Seed the random number generator and generate a latin hypercube sample.
 rng('default');
@@ -75,18 +77,21 @@ parfor iRun = 1:NumRuns
     end
     Patterns(iRun) = max(U(end,ui))-min(U(end,ui));
     Patterning(iRun) = max(abs(U(end,ui)-uss))>1e-5; 
-
+    TuringUnstable(iRun) = TuringConditions(modelName, params);
     % Variables to reconstruct runs.
     RunSolutions{iRun} = U;
     RunParameters{iRun} = params;
 end
 
-%NB LHS stores all random numbers except U0.
-save(['DataRuns',modelName, num2str(dims), 'D.mat']);
-
 % Output the number of sims that had a 'pattern' at the final time, and the
 % number which left the HSS
 NumPatterns = nnz(Patterns > 1e-5);
 NumPatterning = nnz(Patterning); 
+NumTuring = nnz(TuringUnstable);
+
+%NB LHS stores all random numbers except U0.
+save(['DataRuns',modelName, num2str(dims), 'D.mat']);
+
+
 TextProgressBar('')
 end
