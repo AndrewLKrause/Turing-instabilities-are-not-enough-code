@@ -12,8 +12,7 @@ if(~exist('setup','var'))
     a = 1; b = 1; c = 3; d = 0.8; 
 
     % Diffusion coefficients
-    Du = 1;
-    Dv = 1;
+    D = 1;
 
     % Time interval to solve the equations on
     T = linspace(0,500,1000);
@@ -54,9 +53,9 @@ if (dimensions == 1)
     Adv = (1/(2*dx))*Adv;
     Lap = (1/dx)^2*Lap;
 
-    F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui) -...
+    F = @(t,U)[f(U(ui),U(vi)) + Lap*U(ui) -...
         c*(U(ui).*(Lap*U(vi)) + (Adv*U(ui)).*(Adv*U(vi)));
-        g(U(ui),U(vi)) + Dv*Lap*U(vi)];
+        g(U(ui),U(vi)) + D*Lap*U(vi)];
 
 elseif (dimensions == 2)
     % 2D Laplacian
@@ -65,17 +64,17 @@ elseif (dimensions == 2)
     Advy = (1/(2*dx))*kron(I, Adv);
     Lap = (1/dx)^2*(kron(Lap,I) + kron(I, Lap));
 
-    F = @(t,U)[f(U(ui),U(vi)) + Du*Lap*U(ui) -...
+    F = @(t,U)[f(U(ui),U(vi)) + Lap*U(ui) -...
         c*(U(ui).*(Lap*U(vi)) +...
         (Advx*U(ui)).*(Advx*U(vi)) + (Advy*U(ui)).*(Advy*U(vi)));
-        g(U(ui),U(vi)) + Dv*Lap*U(vi)];
+        g(U(ui),U(vi)) + D*Lap*U(vi)];
 
 end
 
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics
-U0 = [1 + 1e-2*randn(N,1); 1/a + 1e-2*randn(N,1)];
+U0 = [b + 1e-2*randn(N,1); 1/a + 1e-2*randn(N,1)];
 
 % This is the Jacobian sparsity pattern. That is, if you compute the
 % Jacobian of the vector function F above for the vector argument U, this

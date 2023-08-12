@@ -4,14 +4,16 @@ if(~exist('setup','var'))
     clear;
     SetupBaseParams;
     % Domain length.
-    L = 50;
+    L = 30;
 
     % Parameters in the reaction kinetics.
-    a = 1; b = 0.4; c=0.5;
+    a = 1; b = 0.45; c=0.5; 
 
     % Nonlocal interaction strength and range
-    mu = 20;
-    xi = 1;
+    d=20; % This is mu/xi.
+
+    %Diffusion rate
+    D = 1;
 
     % Time interval to solve the equations on.
     T = linspace(0,300,1000);
@@ -42,7 +44,7 @@ Adv = (1/(2*dx))*Adv;
 % dx on either side
 kernel = cat(2, flip(-dx:-dx:(-L/2 + dx)),0:dx:(L/2 - dx));
 % exponentially decaying interaction kernel
-kernel = sign(kernel).*exp(-abs(kernel)/xi);
+kernel = sign(kernel).*exp(-abs(kernel));
 % flip kernel as it get flipped in the convolution
 kernel = flip(kernel);
 kernel = transpose(kernel);
@@ -51,7 +53,7 @@ kernel = transpose(kernel);
 ui = 1:N;
 
 % Put together the diffusion + kinetics + nonlocal advection terms into a big vector
-F = @(t,U) Lap*U + a*U.*(1 - U/c).*(U - b) - dx*(mu/xi)*Adv*(U.*(1 - U).*fft_convolve(U,kernel));
+F = @(t,U) D*Lap*U + a*U.*(1 - U/c).*(U - b) - dx*(d)*Adv*(U.*(1 - U).*fft_convolve(U,kernel));
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics

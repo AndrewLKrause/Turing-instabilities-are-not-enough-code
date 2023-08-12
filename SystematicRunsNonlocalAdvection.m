@@ -24,8 +24,8 @@ end
 
 setup = 1;
 
-NumRuns = 1000; % Number of runs to check.
-Var = 0.05; R = @()(1-Var+2*Var*rand);
+NumRuns = 10000; % Number of runs to check.
+Var = 0.05; 
 
 % Time interval to solve the equations on.
 T = linspace(0,10000,10);
@@ -34,21 +34,24 @@ Patterns = zeros(NumRuns,1);
 if (~showProgressBar)
     TextProgressBar('Running: ');
 end
-sims = cell(NumRuns,1);
+InitialU0s = cell(NumRuns,1);
+
+% Seed the random number generator and generate a latin hypercube sample.
+rng('default');
+LHS=(1-Var+2*Var*lhsdesign(NumRuns,6));
 
 for iRun = 1:NumRuns
-    % Seed the random number generator.
-    rng(iRun);
-
     % Domain length
-    L = 50*R();
+    L = 30*LHS(iRun, 1);
 
     % Parameters in the reaction kinetics.
-    a = 1*R(); b = 0.4*R(); c = 0.5*R();
+    a = 1*LHS(iRun, 2); b = 0.45*LHS(iRun, 3); c = 0.5*LHS(iRun, 4); 
 
     % Nonlocal interaction strength and range
-    mu = 20*R();
-    xi = 1*R();
+    d = 20*LHS(iRun, 5);
+
+    % Diffusion rate
+    D = 1*LHS(iRun, 6);
 
     % Spatial step size.
     dx = L/(m-1);
@@ -58,22 +61,11 @@ for iRun = 1:NumRuns
         TextProgressBar(100 * iRun / NumRuns)
     end
     Patterns(iRun) = max(U(end,ui))-min(U(end,ui));
-    Patterning(iRun) = max(U(end,ui));
+    Patterning(iRun) = max(abs(U(end,ui)-c))>1e-5;
 
     % Save.
-    runDetails = struct();
-    runDetails.L = L;
-    runDetails.a = a;
-    runDetails.b = b;
-    runDetails.c = c;
-    runDetails.mu = mu;
-    runDetails.xi = xi;
-    runDetails.dx = dx;
-    runDetails.U0 = U0;
-    runDetails.Patterns = Patterns(iRun);
-    runDetails.Patterning = Patterning(iRun);
-    sims{iRun} = runDetails;
+    InitialU0s{iRun} = U0;
 end
-save("SystematicRunsNonlocalAdvection.mat", "sims");
+save("SystematicRunsNonlocalAdvection.mat");
 TextProgressBar('')
 
