@@ -9,7 +9,7 @@ rng('default');
 
 switch modelName
     case 'RD'
-        BaseParams = {100, 1.8, 18, 2, 5, 0.02,25};
+        BaseParams = {100, 1.75, 18, 2, 5, 0.02,25};
         %        {  L,   a,  b, c, d,    e, D}
         Solver = @RDSolver;
         T = linspace(0,300,1000);% Solution timescale.
@@ -20,7 +20,7 @@ switch modelName
         T = linspace(0,1000,1000);
     case 'Biharmonic'
         BaseParams = {100, 5, 0.9, 1, 1.45};
-        %        {  L, a,   b, c,    D}
+        %            {  L, a,   b, c,    D}
         Solver = @BiharmonicSolver;
         T = linspace(0,200,1000);
     case 'NonlocalAdvection'

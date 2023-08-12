@@ -10,12 +10,12 @@ showProgBar = false;
 rng('default');
 [m,tols] = CreateBaseParams(dims);
 
-NumRuns = 100; % Number of runs to check.
+NumRuns = 10000; % Number of runs to check.
 Var = 0.05; % Percentage variation from base parameter values
 
 switch modelName
     case 'RD'
-        BaseParams = {100, 1.8, 18, 2, 5, 0.02,25};
+        BaseParams = {100, 1.75, 18, 2, 5, 0.02,25};
         %            {  L,   a,  b, c, d,    e, D}
         Solver = @RDSolver;
     case 'KellerSegel'
@@ -82,7 +82,7 @@ parfor iRun = 1:NumRuns
 end
 
 %NB LHS stores all random numbers except U0.
-save(['SystematicRuns',modelName, '.mat']);
+save(['DataRuns',modelName, num2str(dims), 'D.mat']);
 
 % Output the number of sims that had a 'pattern' at the final time, and the
 % number which left the HSS
