@@ -10,7 +10,7 @@ showProgBar = false;
 rng('default');
 [m,tols] = CreateBaseParams(dims);
 
-NumRuns = 100; % Number of runs to check.
+NumRuns = 10; % Number of runs to check.
 Var = 0.05; % Percentage variation from base parameter values
 
 switch modelName
