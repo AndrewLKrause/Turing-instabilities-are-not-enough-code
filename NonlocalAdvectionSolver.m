@@ -33,14 +33,14 @@ kernel = flip(kernel);
 kernel = transpose(kernel);
 
 % Function for calculating the circular convolution using FFT
-fft_convolve = @(u,k)circshift(real(ifft(fft(u).*fft(k, size(u,1)))),-floorDiv(size(k,1)-1,2));
+fft_convolve = @(u)circshift(real(ifft(fft(u).*fft(kernel, size(u,1)))),-floor(size(kernel,1)-1)/2);
 
 % Indices corresponding to u variable. This is for plotting code to work.
 ui = 1:m; vi=[];
 
 % Put together the diffusion + kinetics + nonlocal advection terms.
 F = @(t,U) D*Lap*U + a*U.*(1 - U/c).*(U - b) ...
-    - dx*(d)*Adv*(U.*(1 - U).*fft_convolve(U,kernel));
+    - dx*(d)*Adv*(U.*(1 - U).*fft_convolve(U));
 
 % Initial condition - this is a small normally distributed perturbation of
 % the homogeneous steady state of our kinetics.
