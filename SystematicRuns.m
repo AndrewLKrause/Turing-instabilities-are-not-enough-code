@@ -1,8 +1,17 @@
 function [NumPatterns, NumPatterning, NumTuring] = SystematicRuns(modelName,dims)
 % This function performs NumRuns simulations of a given model and dimension
 % The outputs are the number of sims that had a 'pattern' at the final 
-% %time, and the number which left the HSS, respectively.
+% time, and the number which left the HSS, respectively.
 
+if nargin < 1
+    modelName = 'RD';
+end
+
+if nargin < 2
+    dims = 1;
+end
+
+modelName = convertStringsToChars(modelName);
 
 % Show a progress bar?
 showProgBar = false;
