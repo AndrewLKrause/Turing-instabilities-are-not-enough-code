@@ -17,36 +17,10 @@ modelName = convertStringsToChars(modelName);
 showProgBar = false;
 % Set default random seed and get numerical parameters.
 rng('default');
-[m,tols] = CreateBaseParams(dims);
+[m,tols, BaseParams, Solver] = CreateBaseParams(modelName, dims);
 
 NumRuns = 100; % Number of runs to check.
 Var = 0.05; % Percentage variation from base parameter values
-
-switch modelName
-    case 'RD'
-        BaseParams = {100, 1.75, 18, 2, 5, 0.02,30};
-        %            {  L,   a,  b, c, d,    e, D}
-        Solver = @RDSolver;
-    case 'KellerSegel'
-        BaseParams = {80, 1, 1, 3, 0.8,1};
-        %            { L, a, b, c,   d, D}
-        Solver = @KellerSegelSolver;
-    case 'Biharmonic'
-        BaseParams = {100, 5, 0.9, 1, 1.45};
-        %        {  L, a,   b, c,    D}
-        Solver = @BiharmonicSolver;
-    case 'NonlocalAdvection'
-        if(dims~=1)
-            disp('Currently only 1D is implemented for this model.');
-            return;
-        end
-        BaseParams = {30, 1, 0.45, 0.5, 20, 1};
-        %            { L, a,    b,   c,  d, D}
-        Solver = @NonlocalAdvectionSolver;
-    otherwise
-        disp('Unknown method.')
-        return;
-end
 
 NumParams = length(BaseParams);
 
