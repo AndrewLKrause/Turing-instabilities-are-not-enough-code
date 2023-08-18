@@ -19,6 +19,10 @@ switch modelName
 end
 
 [U,x,ui,vi] = Solver(dims, m, BaseParams, tols, T,showProgBar);
-%PlotSolution(dims,U, x, ui)
+
+if(dims==1)
+    PlotKymograph(U,x,T,ui);
+elseif(dims==2)
+    PlotSolution(dims,U, x, ui)
+end
 %AnimateSolution(dims,U, x,T, ui,vi)
-PlotKymograph(U,x,T,ui);
