@@ -20,7 +20,7 @@ switch modelName
         lambda = D*rho_k-rho_k^2+a*c*(b-c);
     case 'NonlocalAdvection'
         [~, a, b, c,d, D] = deal(params{:});
-        lambda = -a*c*(c-b)-D*rho_k + 2*pi*c*(1-c)*d*(1/(2*pi))*(rho_k)/((1 + rho_k)^(3/2));
+        lambda = -a*c*(c-b)-D*rho_k + c*(1-c)*d*(rho_k)/((1 + rho_k)^(3/2));
     otherwise
         disp('Unknown method.')
         return;
