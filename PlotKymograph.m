@@ -4,10 +4,10 @@ function PlotKymograph(U,x,T,ui)
 
 close all;
 
-imagesc(x,T,(U(:,ui))); set(gca,'YDir','normal')%ax.YTickLabel = flip(ax.YTickLabel);
-xlabel('$x$','interpreter','latex')
-ylabel('$t$','interpreter','latex')
-colorbar;
+imagesc(T,x,(U(:,ui))'); set(gca,'YDir','normal')%ax.YTickLabel = flip(ax.YTickLabel);
+xlabel('$t$','interpreter','latex')
+ylabel('$x$','interpreter','latex')
+c = colorbar; c.TickLabelInterpreter='latex';
 
 set(gca,'TickLabelInterpreter','latex')
 set(gca,'fontsize',24);
