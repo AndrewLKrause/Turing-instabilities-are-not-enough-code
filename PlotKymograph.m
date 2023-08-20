@@ -7,6 +7,8 @@ close all;
 imagesc(T,x,(U(:,ui))'); set(gca,'YDir','normal')%ax.YTickLabel = flip(ax.YTickLabel);
 xlabel('$t$','interpreter','latex')
 ylabel('$x$','interpreter','latex')
+colormap(viridis)
+
 c = colorbar; c.TickLabelInterpreter='latex';
 
 set(gca,'TickLabelInterpreter','latex')
