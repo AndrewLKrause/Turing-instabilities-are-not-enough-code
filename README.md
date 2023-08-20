@@ -1,7 +1,9 @@
 # Turing Conditions are not Enough Code
  
 This is the repository of code associated with the paper, "Turing conditions are not enough to ensure pattern formation." The key files to use are RunAndPlot and the associated plotting functions. An example of this would be calling:
+
 `[U, x, T, ui, vi] = RunAndPlot('KellerSegel',1);`
+
 which will run the Keller-Segel chemotaxis model using the standard parameters in one spatial dimension, and then plot a Kymograph of the variable $u$.
 
 All other functions are used to generate the Figures and Tables in the paper, such as the SystematicRuns.m file which implements the large-scale Latin Hypercube Sampling and runs the corresponding simulations.
