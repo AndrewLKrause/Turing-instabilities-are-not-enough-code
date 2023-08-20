@@ -6,7 +6,7 @@ This is the repository of code associated with the paper, "Turing conditions are
 
 which will run the Keller-Segel chemotaxis model using the standard parameters in one spatial dimension, and then plot a Kymograph of the variable $u$.
 
-All other functions are used to generate the Figures and Tables in the paper, such as the SystematicRuns.m file which implements the large-scale Latin Hypercube Sampling and runs the corresponding simulations.
+All other functions are used to generate the Figures and Tables in the paper, such as the SystematicRuns.m file which implements Latin Hypercube Sampling and runs the corresponding simulations as described in the paper.
 
 ## Numerical methods
 
