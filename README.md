@@ -16,4 +16,4 @@ In all 1D simulations we used $m=1000$ nodes, and for the 2D simulations we used
 
 ## Interactive solutions
 
-An interactive live-simulation implementation of the three local models can be found on the VisualPDE website at \url{https://canary.visualpde.com/Turing-conditions-are-not-enough}.
+An interactive live-simulation implementation of the three local models can be found on the VisualPDE website at .https://canary.visualpde.com/Turing-conditions-are-not-enough.
