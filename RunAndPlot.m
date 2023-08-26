@@ -22,7 +22,7 @@ switch modelName
         BaseParams = {100, 5, 0.9, 1, 1.45};
         %            {  L, a,   b, c,    D}
         Solver = @BiharmonicSolver;
-        T = linspace(0,180,100);
+        T = linspace(0,200,100);
     case 'NonlocalAdvection'
         T = linspace(0,18,1000);
 end
@@ -32,6 +32,6 @@ end
 if (dims == 1)
     PlotKymograph(U,x,T,ui);
 elseif (dims == 2)
-    PlotSolution(dims,U, x, ui)
+    PlotSolution(dims,U,x,T,ui)
 end
 %AnimateSolution(dims,U, x,T, ui,vi)

@@ -7,7 +7,7 @@ function PlotDispersionRelation(modelName,max_k)
 L = params{1};
 
 rho = linspace(0,(max_k*pi/L)^2,1e4);
-lambda = arrayfun(@(rho)DispersionRelation(modelName, params,rho),rho);
+lambda = DispersionRelation(modelName, params,rho);
 
 close all;
 
@@ -16,7 +16,7 @@ xlabel('$\rho_k$','interpreter','latex')
 ylabel('$\lambda_k$','interpreter','latex')
 
 rho_k = ((0:max_k)*(pi/L)).^2;
-lambda_k = arrayfun(@(rho)DispersionRelation(modelName, params,rho),rho_k);
+lambda_k = DispersionRelation(modelName, params,rho_k)
 
 line([0, (max_k*pi/L)^2], [0, 0], 'color','k');
 plot(rho_k,lambda_k,'.','markersize',15);

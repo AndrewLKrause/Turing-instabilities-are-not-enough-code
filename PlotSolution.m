@@ -1,8 +1,10 @@
-function PlotSolution(dims,U, x, ui)
+function PlotSolution(dims,U,x,T,ui)
 
-close all;
-if(dims==1)
-    plot(x,U(1,ui),'linewidth',2); hold on
+close all
+figure
+if (dims == 1)
+    hold on
+    plot(x,U(1,ui),'linewidth',2);
     plot(x,U(end/10,ui),'linewidth',2);
     plot(x,U(end/2,ui),'linewidth',2)
     plot(x,U(end,ui),'linewidth',2)
@@ -11,13 +13,22 @@ if(dims==1)
 
     set(gca,'fontsize',24);
 
-elseif(dims==2)
-    M=6;
-    Is = round(length(T)/M);
-    for i = 1:M-1
-            figure; imagesc(reshape(U(Is*i,ui),m,m)); title(['$t=', num2str(T(Is*i)),'$'],'interpreter','latex'); colorbar;
+elseif (dims == 2)
+    M = 6;
+    Is = [(1:M-1)*round(length(T)/M), size(U,1)];
+    m = round(sqrt(numel(ui)));
+    clims = [min(U(:,ui),[],'all'),max(U(:,ui),[],'all')];
+
+    for i = Is
+            nexttile();
+            imagesc(reshape(U(i,ui),m,m));
+            axis equal
+            axis tight
+            title(['$t=', num2str(T(i)),'$'],'interpreter','latex');
+            c = colorbar;
+            c.TickLabelInterpreter = 'latex';
+            caxis(clims);
     end
-    figure; imagesc(reshape(U(end,ui),m,m)); title(['$t=', num2str(T(end)),'$'],'interpreter','latex'); colorbar;
 
 end
 

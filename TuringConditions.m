@@ -3,10 +3,11 @@ function TuringUnstable = TuringConditions(modelName, params)
 % given model and parameters. Note this incorporates domain length/finite 
 % wavemode selection by looking at the first 500 spatial eigenvalues.
 
+L = params{1};
 max_k = 500;
 rho_k = ((0:max_k)*(pi/L)).^2;
 
-lambda = DispersionRelation(modelName, params,rho_k);
+lambda = DispersionRelation(modelName,params,rho_k);
 
 TuringUnstable = (real(lambda(1)) < 0) && (max(real(lambda))>0);
 

@@ -45,7 +45,7 @@ LHS=(1-Var+2*Var*lhsdesign(NumRuns,NumParams));
 %Create a parallel pool or do nothing if one exists.
 gcp;
 
-parfor iRun = 1:NumRuns
+for iRun = 1:NumRuns
     % Use a random seed based on the current run.
     rng(iRun);
     params = cell(1,NumParams);
