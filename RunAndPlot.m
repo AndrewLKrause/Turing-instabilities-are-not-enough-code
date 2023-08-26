@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 function [U, x, T, ui, vi] = RunAndPlot(modelName,dims)
 % Run and plot the model given by the string.
 
