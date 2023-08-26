@@ -32,7 +32,7 @@ end
 if(dims==1)
     m = 1000;
 elseif(dims==2)
-    m=100;
+    m=200;
 end
 
 % Numerical tolerances (absolute and relative).

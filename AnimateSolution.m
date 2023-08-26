@@ -8,6 +8,7 @@ if (dims == 1)
         if ~ishghandle(f1)
             break
         end
+        hold off
         plot(x,U(i,ui),'linewidth',2); hold on
         if(plotV)
             plot(x,U(i,vi),'--','linewidth',2);
@@ -18,14 +19,12 @@ if (dims == 1)
         set(gca,'YLim',[minU,maxU]);
         title(['$t = ',num2str(T(i)),'$'],'interpreter','latex')
         pause(2/length(T));
-        hold off;
     end
 elseif (dims==2)
     m = sqrt(length(ui));
     maxU = max(max(U(:,ui))); minU = min(min(U(:,ui)));
     imagesc(reshape(U(1,ui),m,m)); colorbar; 
     caxis([minU,maxU]); ax = gca; ax.XTick = []; ax.YTick = [];
-    hold on;
     for i=1:length(T)
         if ~ishghandle(f1)
             break
