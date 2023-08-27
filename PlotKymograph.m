@@ -1,15 +1,17 @@
 function PlotKymograph(U,x,T,ui)
 % Plots a space-time diagram (Kymograph) of u.
 
-
-close all;
-
-imagesc(T,x,(U(:,ui))'); set(gca,'YDir','normal')%ax.YTickLabel = flip(ax.YTickLabel);
+imagesc(T,x,(U(:,ui))'); 
+set(gca,'YDir','normal')
 xlabel('$t$','interpreter','latex')
 ylabel('$x$','interpreter','latex')
 colormap(viridis)
+shading interp
 
-c = colorbar; c.TickLabelInterpreter='latex';
+c = colorbar;
+c.Label.String = '$u$';
+c.TickLabelInterpreter = 'latex';
+c.Label.Interpreter = 'latex';
 
 set(gca,'TickLabelInterpreter','latex')
 set(gca,'fontsize',24);

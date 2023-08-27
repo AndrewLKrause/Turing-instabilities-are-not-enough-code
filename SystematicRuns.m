@@ -45,7 +45,7 @@ LHS=(1-Var+2*Var*lhsdesign(NumRuns,NumParams));
 %Create a parallel pool or do nothing if one exists.
 gcp;
 
-for iRun = 1:NumRuns
+parfor iRun = 1:NumRuns
     % Use a random seed based on the current run.
     rng(iRun);
     params = cell(1,NumParams);
@@ -60,7 +60,7 @@ for iRun = 1:NumRuns
     end
     Patterns(iRun) = max(U(end,ui))-min(U(end,ui));
     Patterning(iRun) = max(abs(U(end,ui)-uss))>1e-5; 
-    TuringUnstable(iRun) = TuringConditions(modelName, params);
+    TuringUnstable(iRun) = TuringConditions(modelName, params, dims);
     % Variables to reconstruct runs.
     RunSolutions{iRun} = U;
     RunParameters{iRun} = params;

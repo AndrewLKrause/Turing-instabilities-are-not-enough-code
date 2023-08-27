@@ -1,7 +1,5 @@
 function PlotSolution(dims,U,x,T,ui)
 
-close all
-figure
 if (dims == 1)
     hold on
     plot(x,U(1,ui),'linewidth',2);

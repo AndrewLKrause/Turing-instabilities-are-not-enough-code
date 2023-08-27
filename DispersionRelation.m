@@ -1,6 +1,9 @@
-function lambda = DispersionRelation(modelName,params,rho_k)
+function lambda = DispersionRelation(modelName,params,rho_k,dims)
 % This function determines if the Turing Conditions are satisfied for the
 % given model and parameters.
+if nargin < 4
+    dims = 1;
+end
 
 switch modelName
     case 'RD'
@@ -20,7 +23,7 @@ switch modelName
         lambda = D*rho_k - rho_k.^2 + a*c*(b - c);
     case 'NonlocalAdvection'
         [~, a, b, c,d, D] = deal(params{:});
-        lambda = -a*c*(c - b) - D*rho_k + c*(1 - c)*d*(rho_k)./(pi*(1 + rho_k).^(1/2));
+        lambda = -a*c*(c - b) - D*rho_k + c*(1 - c)*d*rho_k./(pi^(2-dims)*(1 + rho_k).^((dims+1)/2));
     otherwise
         disp('Unknown method.')
         return;
